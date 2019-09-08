@@ -12,13 +12,11 @@ require('./index.css').toString();
  * @typedef {object} QuoteData
  * @description Quote Tool`s input and output data
  * @property {string} text - quote`s text
- * @property {string} caption - quote`s caption
  * @property {'center'|'left'} alignment - quote`s alignment
  *
  * @typedef {object} QuoteConfig
  * @description Quote Tool`s initial configuration
  * @property {string} quotePlaceholder - placeholder to show in quote`s text input
- * @property {string} captionPlaceholder - placeholder to show in quote`s caption input
  * @property {'center'|'left'} defaultAlignment - alignment to use as default
  */
 class Quote {
@@ -62,16 +60,6 @@ class Quote {
    */
   static get DEFAULT_QUOTE_PLACEHOLDER() {
     return 'Enter a quote';
-  }
-
-  /**
-   * Default placeholder for quote caption
-   *
-   * @public
-   * @returns {string}
-   */
-  static get DEFAULT_CAPTION_PLACEHOLDER() {
-    return 'Enter a caption';
   }
 
   /**
@@ -120,7 +108,7 @@ class Quote {
   /**
    * Tool`s styles
    *
-   * @returns {{baseClass: string, wrapper: string, quote: string, input: string, caption: string, settingsButton: string, settingsButtonActive: string}}
+   * @returns {{baseClass: string, wrapper: string, quote: string, input: string, settingsButton: string, settingsButtonActive: string}}
    */
   get CSS() {
     return {
@@ -128,7 +116,6 @@ class Quote {
       wrapper: 'cdx-quote',
       text: 'cdx-quote__text',
       input: this.api.styles.input,
-      caption: 'cdx-quote__caption',
       settingsWrapper: 'cdx-quote-settings',
       settingsButton: this.api.styles.settingsButton,
       settingsButtonActive: this.api.styles.settingsButtonActive
@@ -167,11 +154,9 @@ class Quote {
     this.api = api;
 
     this.quotePlaceholder = config.quotePlaceholder || Quote.DEFAULT_QUOTE_PLACEHOLDER;
-    this.captionPlaceholder = config.captionPlaceholder || Quote.DEFAULT_CAPTION_PLACEHOLDER;
 
     this.data = {
       text: data.text || '',
-      caption: data.caption || '',
       alignment: Object.values(ALIGNMENTS).includes(data.alignment) && data.alignment ||
       config.defaultAlignment ||
       DEFAULT_ALIGNMENT
@@ -189,16 +174,10 @@ class Quote {
       contentEditable: true,
       innerHTML: this.data.text
     });
-    const caption = this._make('div', [this.CSS.input, this.CSS.caption], {
-      contentEditable: true,
-      innerHTML: this.data.caption
-    });
 
     quote.dataset.placeholder = this.quotePlaceholder;
-    caption.dataset.placeholder = this.captionPlaceholder;
 
     container.appendChild(quote);
-    container.appendChild(caption);
 
     return container;
   }
@@ -211,11 +190,9 @@ class Quote {
    */
   save(quoteElement) {
     const text = quoteElement.querySelector(`.${this.CSS.text}`);
-    const caption = quoteElement.querySelector(`.${this.CSS.caption}`);
 
     return Object.assign(this.data, {
       text: text.innerHTML,
-      caption: caption.innerHTML
     });
   }
 
@@ -225,9 +202,6 @@ class Quote {
   static get sanitize() {
     return {
       text: {
-        br: true,
-      },
-      caption: {
         br: true,
       },
       alignment: {}
