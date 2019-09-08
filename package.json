@@ -1,5 +1,5 @@
 {
-  "name": "@editorjs/quote",
+  "name": "@groupher/editor-quote",
   "version": "2.3.0",
   "keywords": [
     "codex editor",
@@ -8,7 +8,7 @@
     "editor.js",
     "editorjs"
   ],
-  "description": "Quote Tool for Editor.js",
+  "description": "Quote Tool for Editor.js, without caption text",
   "license": "MIT",
   "repository": "https://github.com/editor-js/quote",
   "main": "./dist/bundle.js",
@@ -17,8 +17,8 @@
     "build:dev": "webpack --mode development --watch"
   },
   "author": {
-    "name": "CodeX",
-    "email": "team@codex.so"
+    "name": "groupher team",
+    "email": "support@coderplanets.com"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
