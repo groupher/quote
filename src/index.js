@@ -116,28 +116,7 @@ class Quote {
       wrapper: 'cdx-quote',
       text: 'cdx-quote__text',
       input: this.api.styles.input,
-      settingsWrapper: 'cdx-quote-settings',
-      settingsButton: this.api.styles.settingsButton,
-      settingsButtonActive: this.api.styles.settingsButtonActive
     };
-  }
-
-  /**
-   * Tool`s settings properties
-   *
-   * @returns {*[]}
-   */
-  get settings() {
-    return [
-      {
-        name: 'left',
-        icon: `<svg width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg" ><path d="M1.069 0H13.33a1.069 1.069 0 0 1 0 2.138H1.07a1.069 1.069 0 1 1 0-2.138zm0 4.275H9.03a1.069 1.069 0 1 1 0 2.137H1.07a1.069 1.069 0 1 1 0-2.137zm0 4.275h9.812a1.069 1.069 0 0 1 0 2.137H1.07a1.069 1.069 0 0 1 0-2.137z" /></svg>`
-      },
-      {
-        name: 'center',
-        icon: `<svg width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg" ><path d="M1.069 0H13.33a1.069 1.069 0 0 1 0 2.138H1.07a1.069 1.069 0 1 1 0-2.138zm3.15 4.275h5.962a1.069 1.069 0 0 1 0 2.137H4.22a1.069 1.069 0 1 1 0-2.137zM1.069 8.55H13.33a1.069 1.069 0 0 1 0 2.137H1.07a1.069 1.069 0 0 1 0-2.137z"/></svg>`
-      }
-    ];
   }
 
   /**
@@ -206,55 +185,6 @@ class Quote {
       },
       alignment: {}
     };
-  }
-
-  /**
-   * Create wrapper for Tool`s settings buttons:
-   * 1. Left alignment
-   * 2. Center alignment
-   *
-   * @returns {HTMLDivElement}
-   */
-  renderSettings() {
-    const wrapper = this._make('div', [ this.CSS.settingsWrapper ], {});
-    const capitalize = str => str[0].toUpperCase() + str.substr(1);
-
-    this.settings
-      .map( tune => {
-        const el = this._make('div', this.CSS.settingsButton, {
-          innerHTML: tune.icon,
-          title: `${capitalize(tune.name)} alignment`
-        });
-
-        el.classList.toggle(this.CSS.settingsButtonActive, tune.name === this.data.alignment);
-
-        wrapper.appendChild(el);
-
-        return el;
-      })
-      .forEach((element, index, elements) => {
-        element.addEventListener('click', () => {
-          this._toggleTune(this.settings[index].name);
-
-          elements.forEach((el, i) => {
-            const {name} = this.settings[i];
-
-            el.classList.toggle(this.CSS.settingsButtonActive, name === this.data.alignment);
-          });
-        });
-      });
-
-    return wrapper;
-  };
-
-  /**
-   * Toggle quote`s alignment
-   *
-   * @param {string} tune - alignment
-   * @private
-   */
-  _toggleTune(tune) {
-    this.data.alignment = tune;
   }
 
   /**
