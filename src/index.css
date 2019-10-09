@@ -7,8 +7,13 @@
 }
 
 .cdx-quote__text {
-  min-height: 158px;
-  margin-bottom: 10px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  border-left: 4px solid;
+  border-left-color: #388ae5;
+  color: grey;
+  box-shadow: none;
 }
 
 .cdx-quote__caption {}

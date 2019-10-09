@@ -1,6 +1,6 @@
 {
   "name": "@groupher/editor-quote",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "keywords": [
     "codex editor",
     "tool",
@@ -10,7 +10,7 @@
   ],
   "description": "Quote Tool for Editor.js, without caption text",
   "license": "MIT",
-  "repository": "https://github.com/editor-js/quote",
+  "repository": "https://github.com/groupher/editor-quote",
   "main": "./dist/bundle.js",
   "scripts": {
     "build": "webpack --mode production",
