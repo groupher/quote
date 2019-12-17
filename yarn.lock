@@ -592,10 +592,10 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@groupher/editor-utils@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@groupher/editor-utils/-/editor-utils-0.1.1.tgz#05335851fe13cf016e1d19b6a955ef1d1d5bf148"
-  integrity sha512-xo87iTE4iTidHnmeDGDNYR01WWw7U+OwCUyujeHUC2J9KSt1NXKYc4Nu0vHR9jikmYi++y8Bethmsm8gz1mhLg==
+"@groupher/editor-utils@0.1.11":
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/@groupher/editor-utils/-/editor-utils-0.1.11.tgz#c5226506e6af370d0fded013b0c4900e473cbdb8"
+  integrity sha512-nSSOSSgxu3hxNIvNY3ena6Bq8Bfz4kmuqHkY5XeHf+HV6NYAHcvnQloUox4dqEM5Zrx2Tix7xmxNpwOQhtnTmQ==
 
 "@webassemblyjs/ast@1.8.3":
   version "1.8.3"

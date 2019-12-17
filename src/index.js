@@ -1,9 +1,9 @@
+import { make, highlightSettingIcon } from '@groupher/editor-utils'
+
 /**
  * Build styles
  */
 import  './index.css'
-import { make, highlightSettingIcon } from '@groupher/editor-utils'
-
 import PaperIcon from './icon/paper.svg'
 import QuoteIcon from './icon/quote.svg'
 
@@ -75,27 +75,6 @@ export default class Quote {
   }
 
   /**
-   * Tool`s styles
-   *
-   * @returns {{baseClass: string, wrapper: string, quote: string, input: string, settingsButton: string, settingsButtonActive: string}}
-   */
-  get CSS() {
-    return {
-      baseClass: this.api.styles.block,
-      wrapper: 'cdx-quote-paper', // 'cdx-quote',
-      text: 'cdx-quote-papper__text', // 'cdx-quote__text',
-      input: this.api.styles.input,
-
-      // 
-      quoteSource: 'cdx-quote-source',
-      customSettingWrapper: 'custom-setting-wrapper',
-
-      settingsButton: this.api.styles.settingsButton,
-      settingsButtonActive: this.api.styles.settingsButtonActive,
-    };
-  }
-
-  /**
    * Render plugin`s main Element and fill it with saved data
    *
    * @param {{data: QuoteData, config: QuoteConfig, api: object}}
@@ -112,6 +91,45 @@ export default class Quote {
       type: data.type || 'short', // 'short' || 'part'
       caption: data.caption || 'someone',
     };
+
+    this.settings = [
+      {
+        name: 'short',
+        title: '短引用',
+        icon: QuoteIcon,
+        type: 'short'
+      },
+      {
+        name: 'paper',
+        title: '长文引用',
+        icon: PaperIcon,
+        type: 'paper'
+      },
+    ]
+  }
+
+  /**
+   * Tool`s styles
+   *
+   * @returns {{block: string, wrapper: string, quote: string, input: string, settingsButton: string, settingsButtonActive: string}}
+   */
+  get CSS() {
+    return {
+      block: this.api.styles.block,
+      wrapper: 'cdx-quote-paper', // 'cdx-quote',
+      text: 'cdx-quote-papper__text', // 'cdx-quote__text',
+      input: this.api.styles.input,
+
+      // 
+      quoteSource: 'cdx-quote-source',
+      customSettingWrapper: 'custom-setting-wrapper',
+
+      quoteSourceLine: "cdx-quote-source__line",
+      quoteSourceText: "cdx-quote-source__text",
+
+      settingsButton: this.api.styles.settingsButton,
+      settingsButtonActive: this.api.styles.settingsButtonActive,
+    };
   }
 
   /**
@@ -120,20 +138,33 @@ export default class Quote {
    * @returns {Element}
    */
   render() {
-    const container = make('blockquote', [this.CSS.baseClass, this.CSS.wrapper]);
-    const quote = make('div', [this.CSS.input, this.CSS.text], {
+    const Wrapper = make('div', [this.CSS.block]);
+    const Blockquote = make('blockquote', [this.CSS.wrapper]);
+
+    const Quote = make('div', [this.CSS.input, this.CSS.text], {
+      innerText: this.data.text || "",
       contentEditable: true,
-      innerHTML: this.data.text
+      placeholder: "引用内容。",
     });
 
-    const quoteSource = make('div', [this.CSS.quoteSource], {
-      innerText: '某人/某涞源'
+    // bottom source
+    const QuoteSource = make('div', [this.CSS.quoteSource])
+    const QuoteSourceLine = make('div', [this.CSS.quoteSourceLine])
+    const QuoteSourceText = make('div', [this.CSS.quoteSourceText], {
+      contentEditable: true,
+      innerText: '',
+      placeholder: "引用来源",
     })
-    quote.appendChild(quoteSource);
 
-    container.appendChild(quote);
+    QuoteSource.appendChild(QuoteSourceLine);
+    QuoteSource.appendChild(QuoteSourceText);
 
-    return container;
+    Blockquote.appendChild(Quote);
+    Blockquote.appendChild(QuoteSource);
+
+    Wrapper.appendChild(Blockquote);
+
+    return Wrapper;
   }
 
   /**
@@ -143,21 +174,6 @@ export default class Quote {
    */
   renderSettings() {
     const Wrapper = make('div', [this.CSS.customSettingWrapper])
-
-    this.settings = [
-      {
-        name: 'short',
-        title: '"短引用"',
-        icon: QuoteIcon,
-        type: 'short'
-      },
-      {
-        name: 'paper',
-        title: '"长文引用"',
-        icon: PaperIcon,
-        type: 'paper'
-      },
-    ]
 
     this.settings.forEach( (item) => {
       const itemEl = make('div', [this.CSS.settingsButton], {
@@ -195,7 +211,7 @@ export default class Quote {
   /**
    * Sanitizer rules
    */
-  static get sanitize() {
+  static get sanitize2() {
     return {
       text: {
         br: true,

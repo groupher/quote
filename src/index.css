@@ -47,24 +47,58 @@
 
 .cdx-quote-papper__text {
   line-height: 1.8em;
-  min-height: 0;
+  min-height: 30px;
   border: none;
   border-radius: 0;
   color: grey;
   box-shadow: none;
 }
 
-.cdx-quote-source {
-  position: absolute;
-  color: grey;
-  font-size: 14px;
-  bottom: 10px;
-  right: 42px;
+.cdx-quote-papper__text:empty:before{ 
+  content: attr(placeholder);
+  color: #bbbbbb; 
+} 
+.cdx-quote-papper__text:focus:before{
+  content:none;
 }
 
+.cdx-quote-source {
+  position: absolute;
+  bottom: 10px;
+  right: 42px;
+  display: flex;
+  align-items: center;
+}
+
+.cdx-quote-source__line {
+  width: 30px;
+  height: 1px;
+  margin-right: 10px;
+  background: #bbb;
+}
+
+.cdx-quote-source__text {
+  cursor: text;
+  outline: none;
+  color: grey;
+  font-size: 14px;
+}
+
+/*
 .cdx-quote-source::before {
   content: '---';
-  margin-right: 10px;
+  margin-right: 10px; 
+} 
+*/
+
+.cdx-quote-source__text:empty:before{ 
+  content: attr(placeholder);
+  color: #bbbbbb; 
+  margin-right: 8px;
+} 
+.cdx-quote-source__text:focus:before{
+  content:"";
+  margin-right: 8px;
 }
 
 .cdx-quote__text {
@@ -79,20 +113,25 @@
 
 .cdx-quote__caption {}
 
-.cdx-quote [contentEditable=true][data-placeholder]::before{
-  position: absolute;
+
+/*
+.cdx-quote-papper__text[data-placeholder]:empty::before{
   content: attr(data-placeholder);
   color: #707684;
   font-weight: normal;
-  opacity: 0;
-}
-
-.cdx-quote [contentEditable=true][data-placeholder]:empty::before {
   opacity: 1;
 }
+  
+.cdx-quote-papper__text[data-placeholder]:focus:empty::before{
+  opacity: 0.5;
+}
+*/
 
-.cdx-quote [contentEditable=true][data-placeholder]:empty:focus::before {
-  opacity: 0;
+.cdx-quote [contentEditable=true][data-placeholder]::before{
+  content: attr(data-placeholder);
+  color: #707684;
+  font-weight: normal;
+  opacity: 1;
 }
 
 .custom-setting-wrapper {
