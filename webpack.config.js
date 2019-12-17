@@ -15,6 +15,10 @@ module.exports = {
         ]
       },
       {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader?removeSVGTagAttrs=false'
+      },
+      {
         test: /\.css$/,
         use: [
           'style-loader',

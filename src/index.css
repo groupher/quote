@@ -14,7 +14,7 @@
   border-bottom: 1px solid;
   border-color: lightgrey;
   margin: 15px;
-  margin-left: 30px;
+  margin-left: 22px;
   margin-right: 50px;
   min-height: 140px;
   padding: 6px 30px;
@@ -39,7 +39,7 @@
   content: '\201D';
   font-size: 42px;
   color: #e8e7e7;
-  right: -15px;
+  right: -13px;
   bottom: 9px;
   height: 28px;
   background: white;
@@ -59,7 +59,7 @@
   color: grey;
   font-size: 14px;
   bottom: 10px;
-  right: 35px;
+  right: 42px;
 }
 
 .cdx-quote-source::before {
@@ -93,4 +93,13 @@
 
 .cdx-quote [contentEditable=true][data-placeholder]:empty:focus::before {
   opacity: 0;
+}
+
+.custom-setting-wrapper {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid;
+  border-bottom-color: #f0f1f5;
+  width: 100%;
+  padding-bottom: 3px;
 }
