@@ -1,7 +1,8 @@
 /**
  * Build styles
  */
-require('./index.css').toString();
+import  './index.css'
+import { make } from '@groupher/editor-utils'
 
 /**
  * @class Quote
@@ -16,7 +17,7 @@ require('./index.css').toString();
  * @typedef {object} QuoteConfig
  * @description Quote Tool`s initial configuration
  */
-class Quote {
+export default class Quote {
   /**
    * Get Tool toolbox settings
    * icon - Tool icon's SVG
@@ -78,9 +79,12 @@ class Quote {
   get CSS() {
     return {
       baseClass: this.api.styles.block,
-      wrapper: 'cdx-quote',
-      text: 'cdx-quote__text',
+      wrapper: 'cdx-quote-paper', // 'cdx-quote',
+      text: 'cdx-quote-papper__text', // 'cdx-quote__text',
       input: this.api.styles.input,
+
+      // 
+      quoteSource: 'cdx-quote-source',
     };
   }
 
@@ -107,12 +111,16 @@ class Quote {
    * @returns {Element}
    */
   render() {
-    const container = this._make('blockquote', [this.CSS.baseClass, this.CSS.wrapper]);
-    const quote = this._make('div', [this.CSS.input, this.CSS.text], {
+    const container = make('blockquote', [this.CSS.baseClass, this.CSS.wrapper]);
+    const quote = make('div', [this.CSS.input, this.CSS.text], {
       contentEditable: true,
       innerHTML: this.data.text
     });
 
+    const quoteSource = make('div', [this.CSS.quoteSource], {
+      innerText: '某人/某涞源'
+    })
+    quote.appendChild(quoteSource);
 
     container.appendChild(quote);
 
@@ -143,30 +151,4 @@ class Quote {
       },
     };
   }
-
-  /**
-   * Helper for making Elements with attributes
-   *
-   * @param  {string} tagName           - new Element tag name
-   * @param  {array|string} classNames  - list or name of CSS classname(s)
-   * @param  {Object} attributes        - any attributes
-   * @return {Element}
-   */
-  _make(tagName, classNames = null, attributes = {}) {
-    let el = document.createElement(tagName);
-
-    if ( Array.isArray(classNames) ) {
-      el.classList.add(...classNames);
-    } else if( classNames ) {
-      el.classList.add(classNames);
-    }
-
-    for (let attrName in attributes) {
-      el[attrName] = attributes[attrName];
-    }
-
-    return el;
-  }
 }
-
-module.exports = Quote;

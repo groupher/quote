@@ -6,6 +6,67 @@
   margin: 0;
 }
 
+.cdx-quote-paper {
+  position: relative;
+  border: 2px solid;
+  border-left: 1px solid;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  border-color: lightgrey;
+  margin: 15px;
+  margin-left: 30px;
+  margin-right: 50px;
+  min-height: 140px;
+  padding: 6px 30px;
+  padding-bottom: 60px;
+  border-top-right-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.cdx-quote-paper::before {
+  position: absolute;
+  content: '\201C';
+  font-size: 50px;
+  color: #e8e7e7;
+  left: -16px;
+  top: 9px;
+  height: 35px;
+  background: white;
+}
+
+.cdx-quote-paper::after {
+  position: absolute;
+  content: '\201D';
+  font-size: 42px;
+  color: #e8e7e7;
+  right: -15px;
+  bottom: 9px;
+  height: 28px;
+  background: white;
+}
+
+.cdx-quote-papper__text {
+  line-height: 1.8em;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  color: grey;
+  box-shadow: none;
+}
+
+.cdx-quote-source {
+  position: absolute;
+  color: grey;
+  font-size: 14px;
+  bottom: 10px;
+  right: 35px;
+}
+
+.cdx-quote-source::before {
+  content: '---';
+  margin-right: 10px;
+}
+
 .cdx-quote__text {
   min-height: 0;
   border: none;
