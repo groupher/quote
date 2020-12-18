@@ -25,7 +25,7 @@
 
 .cdx-quote-paper::before {
   position: absolute;
-  content: '\201C';
+  content: "\201C";
   font-size: 50px;
   color: #e8e7e7;
   left: -16px;
@@ -36,7 +36,7 @@
 
 .cdx-quote-paper::after {
   position: absolute;
-  content: '\201D';
+  content: "\201D";
   font-size: 42px;
   color: #e8e7e7;
   right: -13px;
@@ -54,12 +54,12 @@
   box-shadow: none;
 }
 
-.cdx-quote-papper__text:empty:before{ 
+.cdx-quote-papper__text:empty:before {
   content: attr(placeholder);
-  color: #bbbbbb; 
-} 
-.cdx-quote-papper__text:focus:before{
-  content:none;
+  color: #bbbbbb;
+}
+.cdx-quote-papper__text:focus:before {
+  content: none;
 }
 
 .cdx-quote-source {
@@ -91,13 +91,13 @@
 } 
 */
 
-.cdx-quote-source__text:empty:before{ 
+.cdx-quote-source__text:empty:before {
   content: attr(placeholder);
-  color: #bbbbbb; 
+  color: #bbbbbb;
   margin-right: 8px;
-} 
-.cdx-quote-source__text:focus:before{
-  content:"";
+}
+.cdx-quote-source__text:focus:before {
+  content: "";
   margin-right: 8px;
 }
 
@@ -111,8 +111,8 @@
   box-shadow: none;
 }
 
-.cdx-quote__caption {}
-
+.cdx-quote__caption {
+}
 
 /*
 .cdx-quote-papper__text[data-placeholder]:empty::before{
@@ -127,18 +127,9 @@
 }
 */
 
-.cdx-quote [contentEditable=true][data-placeholder]::before{
+.cdx-quote [contentEditable="true"][data-placeholder]::before {
   content: attr(data-placeholder);
   color: #707684;
   font-weight: normal;
   opacity: 1;
-}
-
-.custom-setting-wrapper {
-  display: flex;
-  justify-content: center;
-  border-bottom: 1px solid;
-  border-bottom-color: #f0f1f5;
-  width: 100%;
-  padding-bottom: 3px;
 }
