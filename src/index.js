@@ -7,6 +7,8 @@ import "./index.css";
 import PaperIcon from "./icon/paper.svg";
 import QuoteIcon from "./icon/quote.svg";
 
+import { MODE } from "./constant";
+
 /**
  * @class Quote
  * @classdesc Quote Tool for Editor.js
@@ -30,10 +32,8 @@ export default class Quote {
    */
   static get toolbox() {
     return {
-      /* icon: '<svg width="15" height="14" viewBox="0 0 15 14" xmlns="http://www.w3.org/2000/svg"><path d="M13.53 6.185l.027.025a1.109 1.109 0 0 1 0 1.568l-5.644 5.644a1.109 1.109 0 1 1-1.569-1.568l4.838-4.837L6.396 2.23A1.125 1.125 0 1 1 7.986.64l5.52 5.518.025.027zm-5.815 0l.026.025a1.109 1.109 0 0 1 0 1.568l-5.644 5.644a1.109 1.109 0 1 1-1.568-1.568l4.837-4.837L.58 2.23A1.125 1.125 0 0 1 2.171.64L7.69 6.158l.025.027z" /></svg>', */
-      icon:
-        '<svg t="1570603614482" class="icon" width="15" height="14" viewBox="0 0 1210 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4264" width="200" height="200"><path d="M517.587974 506.412527a134.482163 134.482163 0 0 0-98.857417-40.735469h-162.841665a69.545917 69.545917 0 0 1-69.796443-69.796443v-23.24878a186.14055 186.14055 0 0 1 186.14055-186.090444h46.497558a47.249136 47.249136 0 0 0 46.547664-46.547664V46.948505a47.249136 47.249136 0 0 0-46.547664-46.547664h-46.497558a362.159864 362.159864 0 0 0-144.302768 29.461815A368.423005 368.423005 0 0 0 29.463819 228.329067 362.310179 362.310179 0 0 0 0.002004 372.631835v511.773776a138.991625 138.991625 0 0 0 139.592886 139.592886h279.135667a138.991625 138.991625 0 0 0 139.592886-139.592886V605.269944a134.482163 134.482163 0 0 0-40.735469-98.857417z m651.366662 0a134.482163 134.482163 0 0 0-98.857417-40.735469h-162.841666a69.545917 69.545917 0 0 1-69.796443-69.796443v-23.24878a186.14055 186.14055 0 0 1 186.14055-186.090444h46.497559a47.249136 47.249136 0 0 0 46.547663-46.547664V46.948505a47.249136 47.249136 0 0 0-46.547663-46.547664h-46.497559a362.159864 362.159864 0 0 0-144.302768 29.461815 368.423005 368.423005 0 0 0-198.466411 198.466411A362.310179 362.310179 0 0 0 651.368666 372.631835v511.773776a138.991625 138.991625 0 0 0 139.592886 139.592886h279.135667a138.991625 138.991625 0 0 0 139.592886-139.592886V605.269944a134.482163 134.482163 0 0 0-40.735469-98.857417z" fill="" p-id="4265"></path></svg>',
-      title: this.i18n === "en" ? "Quote" : "引用",
+      icon: QuoteIcon,
+      title: "引用",
     };
   }
 
@@ -89,26 +89,26 @@ export default class Quote {
     this.api = api;
     this.i18n = config.i18n || "en";
 
-    this.data = {
+    this._data = {
       text: data.text || "",
-      type: data.type || "short", // 'short' || 'part'
-      caption: data.caption || "someone",
+      mode: data.mode || MODE.SHORT,
+      caption: data.caption || "",
     };
 
     this.settings = [
       {
-        name: "short",
         title: "短引用",
+        raw: MODE.SHORT,
         icon: QuoteIcon,
-        type: "short",
       },
       {
-        name: "paper",
         title: "长文引用",
+        raw: MODE.LONG,
         icon: PaperIcon,
-        type: "paper",
       },
     ];
+
+    this.element = null;
   }
 
   /**
@@ -119,18 +119,21 @@ export default class Quote {
   get CSS() {
     return {
       block: this.api.styles.block,
-      wrapper: "cdx-quote-paper", // 'cdx-quote',
-      text: "cdx-quote-papper__text", // 'cdx-quote__text',
-      input: this.api.styles.input,
-
-      //
-      quoteSource: "cdx-quote-source",
-
-      quoteSourceLine: "cdx-quote-source__line",
-      quoteSourceText: "cdx-quote-source__text",
-
       settingsButton: this.api.styles.settingsButton,
       settingsButtonActive: this.api.styles.settingsButtonActive,
+
+      text: "cdx-quote__text", // 'cdx-quote__text',
+
+      // short
+      shortWrapper: "cdx-quote-short",
+
+      // long
+      longWrapper: "cdx-quote-long", // 'cdx-quote',
+
+      // caption for long mode
+      caption: "cdx-quote-caption",
+      captionLine: "cdx-quote-caption__line",
+      captionText: "cdx-quote-caption__text",
     };
   }
 
@@ -140,33 +143,101 @@ export default class Quote {
    * @returns {Element}
    */
   render() {
+    // this.element = this.drawLongQuote();
+    this.element = this.drawShortQuote();
+    return this.element;
+  }
+
+  /**
+   * short/normal content quote style
+   *
+   * @returns {Element}
+   */
+  drawShortQuote() {
     const Wrapper = make("div", [this.CSS.block]);
-    const Blockquote = make("blockquote", [this.CSS.wrapper]);
+    const Blockquote = make("blockquote", [this.CSS.shortWrapper]);
 
-    const Quote = make("div", [this.CSS.input, this.CSS.text], {
-      innerText: this.data.text || "",
+    const TextEl = make("div", [this.CSS.text], {
+      innerText: this._data.text || "",
       contentEditable: true,
-      placeholder: "引用内容。",
+      placeholder: "// 引用内容",
     });
 
-    // bottom source
-    const QuoteSource = make("div", [this.CSS.quoteSource]);
-    const QuoteSourceLine = make("div", [this.CSS.quoteSourceLine]);
-    const QuoteSourceText = make("div", [this.CSS.quoteSourceText], {
-      contentEditable: true,
-      innerText: "",
-      placeholder: "引用来源",
+    TextEl.addEventListener("input", (e) => {
+      this._data.text = e.target.innerHTML;
     });
 
-    QuoteSource.appendChild(QuoteSourceLine);
-    QuoteSource.appendChild(QuoteSourceText);
-
-    Blockquote.appendChild(Quote);
-    Blockquote.appendChild(QuoteSource);
+    Blockquote.appendChild(TextEl);
 
     Wrapper.appendChild(Blockquote);
 
+    this._data.mode = MODE.SHORT;
     return Wrapper;
+  }
+
+  /**
+   * long content quote style
+   *
+   * @returns {Element}
+   */
+  drawLongQuote() {
+    const Wrapper = make("div", [this.CSS.block]);
+    const Blockquote = make("blockquote", [this.CSS.longWrapper]);
+
+    const TextEl = make("div", [this.CSS.text], {
+      innerText: this._data.text || "",
+      contentEditable: true,
+      placeholder: "// 引用内容",
+    });
+
+    TextEl.addEventListener("input", (e) => {
+      this._data.text = e.target.innerHTML;
+    });
+
+    // bottom source
+    const CaptionEl = make("div", [this.CSS.caption]);
+    const CaptionLineEl = make("div", [this.CSS.captionLine]);
+    const CaptionTextEl = make("div", [this.CSS.captionText], {
+      contentEditable: true,
+      innerText: "",
+      placeholder: "// 引用说明",
+    });
+
+    CaptionTextEl.addEventListener("input", (e) => {
+      this._data.caption = e.target.innerHTML;
+    });
+
+    CaptionEl.appendChild(CaptionLineEl);
+    CaptionEl.appendChild(CaptionTextEl);
+
+    Blockquote.appendChild(TextEl);
+    Blockquote.appendChild(CaptionEl);
+
+    Wrapper.appendChild(Blockquote);
+
+    this._data.mode = MODE.LONG;
+    return Wrapper;
+  }
+
+  // switch quote view between long / short
+  switchView() {
+    const { mode } = this._data;
+    const newViewEl =
+      mode === MODE.SHORT ? this.drawLongQuote() : this.drawShortQuote();
+
+    this.replaceElement(newViewEl);
+  }
+
+  /**
+   * replace element wrapper with new html element
+   * @param {HTMLElement} node
+   */
+  replaceElement(node) {
+    this.element.replaceWith(node);
+    this.element = node;
+
+    this.api.tooltip.hide();
+    this.api.toolbar.close();
   }
 
   /**
@@ -182,12 +253,13 @@ export default class Quote {
         innerHTML: item.icon,
       });
 
-      if (this.data.type === item.name) highlightSettingIcon(itemEl, this.api);
+      if (this._data.mode === item.raw) highlightSettingIcon(itemEl, this.api);
 
       this.api.tooltip.onHover(itemEl, item.title, { placement: "top" });
       itemEl.addEventListener("click", () => {
         // this.setCenterIcon(item.name);
         highlightSettingIcon(itemEl, this.api);
+        this.switchView();
       });
 
       Wrapper.appendChild(itemEl);
@@ -203,10 +275,14 @@ export default class Quote {
    * @returns {QuoteData}
    */
   save(quoteElement) {
-    const text = quoteElement.querySelector(`.${this.CSS.text}`);
+    const TextEl = quoteElement.querySelector(`.${this.CSS.text}`);
+    const CaptionTextEl = quoteElement.querySelector(
+      `.${this.CSS.captionText}`
+    );
 
-    return Object.assign(this.data, {
-      text: text.innerHTML,
+    return Object.assign(this._data, {
+      text: TextEl.innerHTML,
+      caption: CaptionTextEl ? CaptionTextEl.innerHTML : "",
     });
   }
 
