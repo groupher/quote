@@ -154,25 +154,25 @@ export default class Quote {
    * @returns {Element}
    */
   drawShortQuote() {
-    const Wrapper = make("div", [this.CSS.block]);
+    const wrapperEl = make("div", [this.CSS.block]);
     const Blockquote = make("blockquote", [this.CSS.shortWrapper]);
 
-    const TextEl = make("div", [this.CSS.text], {
+    const textEl = make("div", [this.CSS.text], {
       innerText: this._data.text || "",
       contentEditable: true,
       placeholder: "// 引用内容",
     });
 
-    TextEl.addEventListener("input", (e) => {
+    textEl.addEventListener("input", (e) => {
       this._data.text = e.target.innerHTML;
     });
 
-    Blockquote.appendChild(TextEl);
+    Blockquote.appendChild(textEl);
 
-    Wrapper.appendChild(Blockquote);
+    wrapperEl.appendChild(Blockquote);
 
     this._data.mode = MODE.SHORT;
-    return Wrapper;
+    return wrapperEl;
   }
 
   /**
@@ -181,42 +181,42 @@ export default class Quote {
    * @returns {Element}
    */
   drawLongQuote() {
-    const Wrapper = make("div", [this.CSS.block]);
+    const wrapperEl = make("div", [this.CSS.block]);
     const Blockquote = make("blockquote", [this.CSS.longWrapper]);
 
-    const TextEl = make("div", [this.CSS.text], {
+    const textEl = make("div", [this.CSS.text], {
       innerText: this._data.text || "",
       contentEditable: true,
       placeholder: "// 引用内容",
     });
 
-    TextEl.addEventListener("input", (e) => {
+    textEl.addEventListener("input", (e) => {
       this._data.text = e.target.innerHTML;
     });
 
     // bottom source
-    const CaptionEl = make("div", [this.CSS.caption]);
-    const CaptionLineEl = make("div", [this.CSS.captionLine]);
-    const CaptionTextEl = make("div", [this.CSS.captionText], {
+    const captionEl = make("div", [this.CSS.caption]);
+    const captionLineEl = make("div", [this.CSS.captionLine]);
+    const captionTextEl = make("div", [this.CSS.captionText], {
       contentEditable: true,
       innerText: "",
       placeholder: "// 引用说明",
     });
 
-    CaptionTextEl.addEventListener("input", (e) => {
+    captionTextEl.addEventListener("input", (e) => {
       this._data.caption = e.target.innerHTML;
     });
 
-    CaptionEl.appendChild(CaptionLineEl);
-    CaptionEl.appendChild(CaptionTextEl);
+    captionEl.appendChild(captionLineEl);
+    captionEl.appendChild(captionTextEl);
 
-    Blockquote.appendChild(TextEl);
-    Blockquote.appendChild(CaptionEl);
+    Blockquote.appendChild(textEl);
+    Blockquote.appendChild(captionEl);
 
-    Wrapper.appendChild(Blockquote);
+    wrapperEl.appendChild(Blockquote);
 
     this._data.mode = MODE.LONG;
-    return Wrapper;
+    return wrapperEl;
   }
 
   // switch quote view between long / short
@@ -246,7 +246,7 @@ export default class Quote {
    * @returns {Element}
    */
   renderSettings() {
-    const Wrapper = make("div");
+    const wrapperEl = make("div");
 
     this.settings.forEach((item) => {
       const itemEl = make("div", [this.CSS.settingsButton], {
@@ -262,10 +262,10 @@ export default class Quote {
         this.switchView();
       });
 
-      Wrapper.appendChild(itemEl);
+      wrapperEl.appendChild(itemEl);
     });
 
-    return Wrapper;
+    return wrapperEl;
   }
 
   /**
@@ -275,14 +275,14 @@ export default class Quote {
    * @returns {QuoteData}
    */
   save(quoteElement) {
-    const TextEl = quoteElement.querySelector(`.${this.CSS.text}`);
-    const CaptionTextEl = quoteElement.querySelector(
+    const textEl = quoteElement.querySelector(`.${this.CSS.text}`);
+    const captionTextEl = quoteElement.querySelector(
       `.${this.CSS.captionText}`
     );
 
     return Object.assign(this._data, {
-      text: TextEl.innerHTML,
-      caption: CaptionTextEl ? CaptionTextEl.innerHTML : "",
+      text: textEl.innerHTML,
+      caption: captionTextEl ? captionTextEl.innerHTML : "",
     });
   }
 
