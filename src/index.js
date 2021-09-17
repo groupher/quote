@@ -1,4 +1,8 @@
-import { make, highlightSettingIcon } from "@groupher/editor-utils";
+import {
+  make,
+  highlightSettingIcon,
+  enableCtrlEnterBreak,
+} from "@groupher/editor-utils";
 
 /**
  * Build styles
@@ -145,6 +149,9 @@ export default class Quote {
   render() {
     // this.element = this.drawLongQuote();
     this.element = this.drawShortQuote();
+
+    enableCtrlEnterBreak(this.element, this.api);
+
     return this.element;
   }
 
@@ -161,6 +168,7 @@ export default class Quote {
       innerText: this._data.text || "",
       contentEditable: true,
       placeholder: "// 引用内容",
+      "data-skip-plus-button": true,
     });
 
     textEl.addEventListener("input", (e) => {
@@ -188,6 +196,7 @@ export default class Quote {
       innerText: this._data.text || "",
       contentEditable: true,
       placeholder: "// 引用内容",
+      "data-skip-plus-button": true,
     });
 
     textEl.addEventListener("input", (e) => {
