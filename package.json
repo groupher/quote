@@ -1,6 +1,6 @@
 {
   "name": "@groupher/editor-quote",
-  "version": "2.3.8",
+  "version": "2.3.9",
   "keywords": [
     "codex editor",
     "tool",
@@ -31,6 +31,6 @@
     "webpack-cli": "^3.2.3"
   },
   "dependencies": {
-    "@groupher/editor-utils": "^0.2.52"
+    "@groupher/editor-utils": "^0.2.54"
   }
 }

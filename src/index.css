@@ -15,6 +15,7 @@
 
 .cdx-quote-short {
   margin-left: 1px;
+  padding-left: 8px;
   min-height: 0;
   border: none;
   border-radius: 0;
@@ -22,6 +23,8 @@
   border-left-color: #388ae5;
   color: grey;
   box-shadow: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .cdx-quote-long {

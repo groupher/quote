@@ -2,6 +2,7 @@ import {
   make,
   highlightSettingIcon,
   enableCtrlEnterBreak,
+  addBreakHint,
 } from "@groupher/editor-utils";
 
 /**
@@ -151,6 +152,7 @@ export default class Quote {
     this.element = this.drawShortQuote();
 
     enableCtrlEnterBreak(this.element, this.api);
+    addBreakHint(this.element, { right: "12px", bottom: "-15px" });
 
     return this.element;
   }
